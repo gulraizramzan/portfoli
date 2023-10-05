@@ -1,5 +1,5 @@
 import userSchema from "../models/usersModel.js";
-
+import getAllUsersServices from "../services/userServices.js";
 export const createUser= async (req,res)=>{
     console.log("test for body hit",req.body)
     try {
@@ -34,9 +34,9 @@ export const createUser= async (req,res)=>{
 }
 
 export const getAllUsers = async (req,res)=>{
-    console.log("test for body hit",req.url)
+    console.log("test for body hit",req.body)
         try {
-          const students= await  userSchema.find();
+          const students= await  getAllUsersServices();
             res.status(200).json(students);
         } catch (error) {
             res.status(400).json({message: error.message})
