@@ -7,36 +7,37 @@ export const getAllUsersServices= ()=>{
 return  userSchema.find()
 }
 
+
 export const createUserServices= async(req,res)=>{
     console.log("request from services")
 
         const {
             firstName,
             lastName,
-            userName,
             email,
             password,
+            userName,
             profileImage,
             address,
             phoneNumber,
             isAdmin}=req.body;
 const hashPassword= await bcrypt.hash(password,10);
-if(!firstName || !lastName || !userName || !email || !password )
-{
-   res.status(400).json({message:"fill requier fileds"})
-}
+// if(!firstName || !lastName || !email || !password )
+// {
+//   return res.status(400).json({message:"fill requier fileds"})
+// }
 const exsistingUser= await userSchema.findOne({email});
 
 if(exsistingUser){
-    res.status(400).json({message:"user already exist"})
+  return  res.status(400).json({message:"user already exist"})
 }
 else {
         const userData= new userSchema({
             firstName,
             lastName,
-            userName,
             email,
             password:hashPassword,
+            userName,
             profileImage,
             address,
             phoneNumber,

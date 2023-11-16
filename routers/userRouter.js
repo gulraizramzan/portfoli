@@ -1,26 +1,28 @@
 import express from "express";
-import jwt from 'jsonwebtoken'
-import { createUser, deleteUser, getAllUsers, updateUsers,loginUser } from "../controller/userControllers.js";
+import middelWare from "../middelWare/middelWare.js";
+import { createUser, deleteUser, getAllUsers, updateUsers,loginUser, getSingalUser } from "../controller/userControllers.js";
+import { emailConfirmation, resetPassword } from "../controller/emailConfirmation.js";
+import { createOrder, getAllOrder } from "../controller/orderController.js";
+import { allMessage, dellMessage, messageRecevier } from "../controller/messageController.js";
 
 const router=express.Router();
 
-const middelWare=(req,res,next)=>{
-    let token;
-    let authHeader=req.headers.Authorization  || req.headers.authorization;
-    token=authHeader.split(" ")[1];
-    jwt.verify(token,process.env.SCRET_CODE,(err,result)=>{
-        if(err){
-            res.status(400).json({message: err.message})
-        }
-        console.log("successfuly");
-        next()
-    })
-}
-
+// user route
 router.get('/users',getAllUsers);
-router.post('/users',createUser);
+router.get('/user/:id',getSingalUser)
+router.post('/create-users',createUser);
 router.put('/users/:id',updateUsers);
 router.delete('/users/:id', deleteUser);
-router.post('/users-login',loginUser);
+router.post('/user-login',loginUser);
+router.post('/forgot/:email',emailConfirmation)
+router.put('/reset/:id',resetPassword)
 
+// order route
+
+router.post('/order',createOrder)
+router.get('/get-all-order',getAllOrder)
+//message route
+router.post('/message',messageRecevier)
+router.get('/all-message',allMessage)
+router.delete('/dell-message/:id',dellMessage)
 export default router;

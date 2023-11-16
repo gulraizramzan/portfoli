@@ -10,10 +10,6 @@ const userModel= new mongoose.Schema({
         type: String,
         require: true,
     },
-    userName:{
-        
-        type:String
-    },
     email:{
         
         type:String,
@@ -24,6 +20,10 @@ const userModel= new mongoose.Schema({
         type:String,
         require: true,
     },
+    userName:{
+        
+        type:String
+    },
     profileImage:{
         
         type:String
@@ -31,17 +31,22 @@ const userModel= new mongoose.Schema({
     address:{
         
         type:String,
-        require: true,
+        
     },
     phoneNumber:{
         
         type:String,
-        require: true,
+       
     },
     isAdmin:
     {
-        type: String
-    }
+        type: String,
+        default : false
+    },
+    dateCreated:{
+        type: Date,
+        default: Date.now()
+     }
 })
 
 const userSchema=mongoose.model("users",userModel);

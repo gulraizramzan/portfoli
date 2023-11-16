@@ -14,7 +14,7 @@ export const createUser= async (req,res)=>{
     }
 
 }
-
+// all user data
 export const getAllUsers = async (req,res)=>{
    
         try {
@@ -24,7 +24,30 @@ export const getAllUsers = async (req,res)=>{
             res.status(400).json({message: error.message})
         }
     }
+// singal user data
 
+export const getSingalUser=async(req,res)=>{
+    try {
+        const userId = req.params.id;
+        const user = await userSchema.findById(userId);
+        if (!user) {
+          return res.status(404).send({
+            message: "User not found",
+            success: false,
+          });
+        }
+        res.status(200).send({
+          message: "User Data fetch Succesfully",
+          success: true,
+          data: user,
+        });
+      } catch (error) {
+        return res.status(500).send({
+          message: "Internal Server Error",
+          success: false,
+        });
+      }
+}
 
     export const updateUsers = async (req,res)=>{
         console.log("test for body hit",req.body)
@@ -49,6 +72,7 @@ export const getAllUsers = async (req,res)=>{
             }
 
             export const loginUser= async(req,res)=>{
+                console.log(req)
                 try {
                     const {email,password}=req.body
 
@@ -65,7 +89,7 @@ export const getAllUsers = async (req,res)=>{
                     }
 
                     const token=Jwt.sign({userId: user._id, email:user.email},process.env.SCRET_CODE,{expiresIn:'1h'});
-                    res.status(200).json({message:'login successfuly', token})
+                    res.status(200).json({message:'login successfuly', token,user})
                 } catch (error) {
                     res.status(400).json({message:'login faild', error:error.message})
                 }
